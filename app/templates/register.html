@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Register · School Platform{% endblock %}
+
+{% block extra_css %}{% endblock %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card rounded-3 shadow-soft hover-raise">
+          <div class="card-body p-4">
+            <h3 class="fw-bold mb-3 text-center">Create Account</h3>
+            <form action="{{ url_for('auth.register') }}" method="post" novalidate aria-label="Registration form">
+              <div class="mb-3">
+                <label for="account_id" class="form-label small">Account ID</label>
+                <input id="account_id" name="account_id" type="text" class="form-control rounded-pill" placeholder="Choose a unique ID" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label small">Password</label>
+                <input id="password" name="password" type="password" class="form-control rounded-pill" placeholder="••••••••" required>
+              </div>
+              <div class="mb-3">
+                <label for="name" class="form-label small">Full Name</label>
+                <input id="name" name="name" type="text" class="form-control rounded-pill" placeholder="Your real name" required>
+              </div>
+              <div class="mb-3">
+                <label for="display_name" class="form-label small">Display Name</label>
+                <input id="display_name" name="display_name" type="text" class="form-control rounded-pill" placeholder="Name shown in platform" required>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary rounded-pill">
+                  <i class="bi bi-person-plus me-1"></i> Register
+                </button>
+              </div>
+              <div class="mt-2 text-center">
+                <a class="small" href="{{ url_for('auth.login') }}">Already have an account? Sign in</a>
+              </div>
+            </form>
+            <hr>
+            <div class="small text-muted text-center">
+              By registering, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/register.js') }}"></script>
+{% endblock %}

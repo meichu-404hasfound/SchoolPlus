@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Home · School Platform{% endblock %}
+
+{% block extra_css %}{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+  <div class="container text-center">
+    <h1 class="display-5 fw-bold mb-3 gradient-text">Welcome to School+</h1>
+    <p class="lead text-muted mb-4">
+      Your centralized platform for courses, grades, schedules, announcements, and more —
+      designed for students and teachers with clarity, accessibility, and smooth interactions.
+    </p>
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card rounded-3 shadow-soft hover-raise">
+          <div class="card-body p-4">
+            <h5 class="mb-3">Quick Login</h5>
+            <form action="{{ url_for('auth.login') }}" method="post" novalidate aria-label="Quick login form">
+              <div class="mb-3">
+                <label for="account_id" class="form-label small">Account ID</label>
+                <input id="account_id" name="account_id" type="text" class="form-control rounded-pill"
+                  placeholder="Enter your ID">
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label small">Password</label>
+                <input id="password" name="password" type="password" class="form-control rounded-pill"
+                  placeholder="••••••••">
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary rounded-pill">
+                  <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                </button>
+              </div>
+              <div class="mt-2 text-center">
+                <a class="small" href="{{ url_for('auth.register') }}">Create an account</a>
+              </div>
+            </form>
+            <hr>
+            <div class="small text-muted">
+              <i class="bi bi-shield-lock me-1"></i> Secure login with institutional account.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}

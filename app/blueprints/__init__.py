@@ -13,7 +13,6 @@ def register_blueprints(app):
         module = importlib.import_module(f"{package}.{module_name}")
         
         bp_var = f"{module_name}_bp"
-        print(bp_var)
+
         if hasattr(module, bp_var):
-            print("HERE")
             app.register_blueprint(getattr(module, bp_var))
