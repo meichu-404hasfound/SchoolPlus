@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Register · School Platform{% endblock %}
+{% block title %}建立一個帳戶 · 學校數位平台{% endblock %}
 
 {% block extra_css %}{% endblock %}
 
@@ -11,40 +11,40 @@
       <div class="col-md-6 col-lg-5">
         <div class="card rounded-3 shadow-soft hover-raise">
           <div class="card-body p-4">
-            <h3 class="fw-bold mb-3 text-center">Create Account</h3>
+            <h3 class="fw-bold mb-3 text-center">建立一個帳戶</h3>
             <form action="{{ url_for('auth.register_post') }}" method="post" novalidate aria-label="Registration form">
               <div class="mb-3">
-                <label for="account" class="form-label small">Account ID</label>
-                <input id="account" name="account" type="text" class="form-control rounded-pill" placeholder="Choose a unique ID" required>
+                <label for="account" class="form-label small">身分證/居留證</label>
+                <input id="account" name="account" type="text" class="form-control rounded-pill" placeholder="輸入你的身分證/居留證" required>
               </div>
               <div class="mb-3">
-                <label for="password" class="form-label small">Password</label>
+                <label for="password" class="form-label small">密碼</label>
                 <input id="password" name="password" type="password" class="form-control rounded-pill" placeholder="••••••••" required>
               </div>
               <div class="mb-3">
-                <label for="confirm" class="form-label small">Confirm Password</label>
+                <label for="confirm" class="form-label small">確認密碼</label>
                 <input id="confirm" name="confirm" type="password" class="form-control rounded-pill" placeholder="••••••••" required>
               </div>
               <div class="mb-3">
-                <label for="name" class="form-label small">Full Name</label>
-                <input id="name" name="name" type="text" class="form-control rounded-pill" placeholder="Your real name" required>
+                <label for="name" class="form-label small">全名</label>
+                <input id="name" name="name" type="text" class="form-control rounded-pill" placeholder="真實姓名" required>
               </div>
               <div class="mb-3">
-                <label for="display_name" class="form-label small">Display Name</label>
-                <input id="display_name" name="display_name" type="text" class="form-control rounded-pill" placeholder="Name shown in platform" required>
+                <label for="display_name" class="form-label small">暱稱</label>
+                <input id="display_name" name="display_name" type="text" class="form-control rounded-pill" placeholder="出現在平台上的名稱" required>
               </div>
               <div class="d-grid">
                 <button type="submit" class="btn btn-primary rounded-pill">
-                  <i class="bi bi-person-plus me-1"></i> Register
+                  <i class="bi bi-person-plus me-1"></i> 建立一個帳戶
                 </button>
               </div>
               <div class="mt-2 text-center">
-                <a class="small" href="{{ url_for('auth.login_get') }}">Already have an account? Sign in</a>
+                <a class="small" href="{{ url_for('auth.login_get') }}">已有帳戶？登入</a>
               </div>
             </form>
             <hr>
             <div class="small text-muted text-center">
-              By registering, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+              透過註冊，您同意我們的 <a href="#">條款</a>和<a href="#">隱私權政策</a>.
             </div>
           </div>
         </div>
