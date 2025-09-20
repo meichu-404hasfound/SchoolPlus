@@ -10,9 +10,9 @@
         <div class="card rounded-3 shadow-soft hover-raise mb-3">
           <div class="card-body p-3">
             <div class="d-flex align-items-center justify-content-between mb-2">
-              <h5 class="fw-bold mb-0"><i class="bi bi-robot me-2 text-primary"></i>AI Chat</h5>
+              <h5 class="fw-bold mb-0"><i class="bi bi-robot me-2 text-primary"></i>AI 聊天</h5>
               <a href="{{ url_for('chatbot.new_chat') }}" class="btn btn-primary btn-sm rounded-pill">
-                <i class="bi bi-stars me-1"></i> New
+                <i class="bi bi-stars me-1"></i> 新增
               </a>
             </div>
 
@@ -26,16 +26,16 @@
 
             <!-- Model + temperature -->
             <div class="mb-3">
-              <label for="modelSelect" class="form-label small">Model</label>
+              <label for="modelSelect" class="form-label small">模型</label>
               <select id="modelSelect" class="form-select rounded-pill">
-                <option value="gpt-4o-mini" selected>School+ Tutor</option>
-                <option value="gpt-4o">Reasoning (slower)</option>
-                <option value="gpt-3.5">Quick draft</option>
+                <option value="gpt-4o-mini" selected>School+ 導師</option>
+                <option value="gpt-4o">思考（較慢）</option>
+                <option value="gpt-3.5">快速草稿</option>
               </select>
             </div>
             <div class="mb-3">
               <label for="tempRange" class="form-label small d-flex justify-content-between">
-                <span>Creativity</span>
+                <span>創造力</span>
                 <span id="tempValue" class="text-muted">0.7</span>
               </label>
               <input id="tempRange" type="range" min="0" max="1" step="0.1" value="0.7" class="form-range">
@@ -43,19 +43,19 @@
 
             <!-- Preset prompts -->
             <div>
-              <p class="small text-muted mb-2">Presets</p>
+              <p class="small text-muted mb-2">預設</p>
               <div class="d-flex flex-wrap gap-2">
                 <button class="btn btn-outline-secondary btn-sm rounded-pill preset-btn" data-prompt="Explain this concept like I’m 12: ">
-                  <i class="bi bi-lightbulb me-1"></i>Explain simply
+                  <i class="bi bi-lightbulb me-1"></i>簡單解釋一下
                 </button>
                 <button class="btn btn-outline-secondary btn-sm rounded-pill preset-btn" data-prompt="Summarize the following text in bullet points: ">
-                  <i class="bi bi-list-ul me-1"></i>Summarize
+                  <i class="bi bi-list-ul me-1"></i>總結
                 </button>
                 <button class="btn btn-outline-secondary btn-sm rounded-pill preset-btn" data-prompt="Help me prepare for an exam on ">
-                  <i class="bi bi-journal-check me-1"></i>Exam prep
+                  <i class="bi bi-journal-check me-1"></i>考試準備
                 </button>
                 <button class="btn btn-outline-secondary btn-sm rounded-pill preset-btn" data-prompt="Generate practice questions on ">
-                  <i class="bi bi-question-circle me-1"></i>Practice Qs
+                  <i class="bi bi-question-circle me-1"></i>練習題
                 </button>
               </div>
             </div>
@@ -65,7 +65,7 @@
         <!-- Conversations list -->
         <div class="card rounded-3 shadow-soft hover-raise">
           <div class="card-body p-3">
-            <h6 class="fw-bold mb-2"><i class="bi bi-clock-history me-2 text-secondary"></i>Recent</h6>
+            <h6 class="fw-bold mb-2"><i class="bi bi-clock-history me-2 text-secondary"></i>最近</h6>
             <div class="vstack gap-2">
               {% for conv in conversations %}
               <a class="btn btn-outline-secondary btn-sm text-start rounded-pill d-flex justify-content-between align-items-center"
@@ -74,7 +74,7 @@
                 <i class="bi bi-chevron-right small"></i>
               </a>
               {% else %}
-              <div class="small text-muted">No conversations yet.</div>
+              <div class="small text-muted">尚未有任何對話</div>
               {% endfor %}
             </div>
           </div>
@@ -91,16 +91,16 @@
                 <i class="bi bi-robot text-white"></i>
               </div>
               <div>
-                <h5 class="mb-0">School+ Tutor</h5>
-                <small class="text-muted">Helpful, accurate, and student-friendly</small>
+                <h5 class="mb-0">School+ 導師</h5>
+                <small class="text-muted">有用、準確、對學生友好</small>
               </div>
             </div>
             <div class="d-flex align-items-center gap-2">
               <button id="btnClear" class="btn btn-outline-secondary btn-sm rounded-pill">
-                <i class="bi bi-trash3 me-1"></i> Clear
+                <i class="bi bi-trash3 me-1"></i> 清除
               </button>
               <button id="btnExport" class="btn btn-outline-secondary btn-sm rounded-pill">
-                <i class="bi bi-download me-1"></i> Export
+                <i class="bi bi-download me-1"></i> 匯出
               </button>
             </div>
           </div>
@@ -140,7 +140,7 @@
               </div>
               {% else %}
               <div class="text-center text-muted py-4">
-                Start a conversation using the box below or choose a preset on the left.
+                使用下面的方塊開始對話或選擇左側的預設
               </div>
               {% endfor %}
 
@@ -154,7 +154,7 @@
                     </div>
                     <div class="card rounded-3 shadow-sm">
                       <div class="card-body p-3">
-                        <span class="small text-muted">Thinking…</span>
+                        <span class="small text-muted">思考中...</span>
                         <div class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></div>
                       </div>
                     </div>
@@ -171,20 +171,20 @@
                   aria-label="Send a message to the AI">
               <div class="row g-2">
                 <div class="col-12 col-md-9">
-                  <label for="chatInput" class="visually-hidden">Message</label>
+                  <label for="chatInput" class="visually-hidden">訊息</label>
                   <input id="chatInput" name="message" class="form-control rounded-pill"
-                         placeholder="Ask anything about your courses, homework, or exams…" required>
+                         placeholder="詢問有關您的課程、作業或考試的任何問題…" required>
                 </div>
                 <div class="col-12 col-md-3 d-flex gap-2">
                   <label for="fileInput" class="btn btn-outline-secondary rounded-pill flex-grow-1 mb-0">
-                    <i class="bi bi-paperclip me-1"></i> Attach
+                    <i class="bi bi-paperclip me-1"></i> 附件
                   </label>
                   <input id="fileInput" type="file" class="d-none" multiple>
                   <button id="btnMic" class="btn btn-outline-secondary rounded-pill" type="button" aria-pressed="false" aria-label="Start voice input">
                     <i class="bi bi-mic"></i>
                   </button>
                   <button id="btnSend" class="btn btn-primary rounded-pill" type="submit">
-                    <i class="bi bi-send me-1"></i> Send
+                    <i class="bi bi-send me-1"></i> 發送
                   </button>
                 </div>
               </div>
@@ -197,7 +197,7 @@
         <!-- Helpful tips -->
         <div class="alert alert-info mt-3 shadow-soft" role="note">
           <i class="bi bi-info-circle me-1"></i>
-          Tip: Press <kbd>Shift</kbd> + <kbd>Enter</kbd> for a new line. Press <kbd>Enter</kbd> to send.
+          提示：按下 <kbd>Shift</kbd> + <kbd>Enter</kbd> 換行。按 <kbd>Enter</kbd> 發送。
         </div>
       </div>
     </div>

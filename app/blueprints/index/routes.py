@@ -12,15 +12,15 @@ def index():
     user = get_current_user()
 
     announcements = [
-        {"type": "success", "msg": "System maintenance completed successfully."},
-        {"type": "info", "msg": "Midterm exam schedule released."},
-        {"type": "danger", "msg": "Network outage expected this weekend."}
+        {"type": "success", "msg": "系統維​​護成功完成"},
+        {"type": "info", "msg": "期中考時間表發布"},
+        {"type": "danger", "msg": "預計本週末將出現網路中斷"}
     ]
 
     upcoming = [
-        {"course": "Math 101", "when": "Mon 10:00–11:30", "room": "Room A1", "status": "Confirmed"},
-        {"course": "Physics 202", "when": "Tue 14:00–15:30", "room": "Lab 3", "status": "Confirmed"},
-        {"course": "History 303", "when": "Wed 09:00–10:30", "room": "Room B2", "status": "Pending"}
+        {"course": "數學 101", "when": "禮拜一 10:00–11:30", "room": "教室 A1", "status": "已確定"},
+        {"course": "物理 202", "when": "禮拜二 14:00–15:30", "room": "試驗室 3", "status": "已確定"},
+        {"course": "歷史 303", "when": "禮拜三 09:00–10:30", "room": "教室 B2", "status": "代辦中"}
     ]
     
     if not user:
@@ -110,12 +110,12 @@ def dashboard():
     
     stats = {"courses": 3, "assignments": 2, "messages": 5}
     announcements = [
-        {"type": "info", "msg": "Midterm exam schedule released."},
-        {"type": "success", "msg": "System upgrade completed."},
+        {"type": "info", "msg": "期中考時間表發布"},
+        {"type": "success", "msg": "系統維​​護成功完成"},
     ]
     upcoming = [
-        {"course": "Math 101", "when": "Mon 10:00–11:30", "room": "Room A1", "status": "Confirmed"},
-        {"course": "Physics 202", "when": "Tue 14:00–15:30", "room": "Lab 3", "status": "Confirmed"},
+        {"course": "數學 101", "when": "禮拜一 10:00–11:30", "room": "教室 A1", "status": "已確定"},
+        {"course": "物理 202", "when": "禮拜二 14:00–15:30", "room": "試驗室 3", "status": "已確定"},
     ]
     return render_template("dashboard.html",
                            user=user,
@@ -133,46 +133,46 @@ def courses():
 
     # Weekly schedule with multiple courses
     schedule = {
-        "Mon": {
-            9: {"course": "Math 101", "room": "A1", "status": "Confirmed"},
-            14: {"course": "English Literature 205", "room": "C2", "status": "Confirmed"}
+        "禮拜一": {
+            9: {"course": "數學 101", "room": "A1", "status": "已確定"},
+            14: {"course": "English Literature 205", "room": "C2", "status": "已確定"}
         },
-        "Tue": {
-            10: {"course": "Physics 202", "room": "Lab 3", "status": "Confirmed"},
-            15: {"course": "Philosophy 110", "room": "B3", "status": "Pending"}
+        "禮拜二": {
+            10: {"course": "物理 202", "room": "試驗室 3", "status": "已確定"},
+            15: {"course": "哲學 110", "room": "B3", "status": "代辦中"}
         },
-        "Wed": {
-            9: {"course": "History 303", "room": "B2", "status": "Confirmed"},
-            13: {"course": "Economics 201", "room": "C1", "status": "Confirmed"}
+        "禮拜三": {
+            9: {"course": "歷史 303", "room": "B2", "status": "已確定"},
+            13: {"course": "Economics 201", "room": "C1", "status": "已確定"}
         },
-        "Thu": {
-            11: {"course": "Computer Science 404", "room": "C4", "status": "Confirmed"},
-            16: {"course": "Chemistry 220", "room": "Lab 2", "status": "Confirmed"}
+        "禮拜四": {
+            11: {"course": "Computer Science 404", "room": "C4", "status": "已確定"},
+            16: {"course": "Chemistry 220", "room": "試驗室 2", "status": "已確定"}
         },
-        "Fri": {
-            10: {"course": "Biology 150", "room": "B1", "status": "Confirmed"},
-            14: {"course": "Data Science 310", "room": "CompSci Lab", "status": "Confirmed"}
+        "禮拜五": {
+            10: {"course": "Biology 150", "room": "B1", "status": "已確定"},
+            14: {"course": "Data Science 310", "room": "CompSci 試驗室", "status": "已確定"}
         }
     }
 
     courses = [
-        {"name": "Math 101", "code": "MATH101"},
-        {"name": "Physics 202", "code": "PHYS202"},
-        {"name": "History 303", "code": "HIST303"},
-        {"name": "Computer Science 404", "code": "CS404"},
-        {"name": "Biology 150", "code": "BIO150"},
-        {"name": "Chemistry 220", "code": "CHEM220"},
-        {"name": "Philosophy 110", "code": "PHIL110"},
-        {"name": "English Literature 205", "code": "ENG205"},
-        {"name": "Economics 201", "code": "ECON201"},
-        {"name": "Data Science 310", "code": "DS310"},
+        {"name": "數學 101", "code": "MATH101"},
+        {"name": "物理 202", "code": "PHYS202"},
+        {"name": "歷史 303", "code": "HIST303"},
+        {"name": "電腦課 404", "code": "CS404"},
+        {"name": "生物 150", "code": "BIO150"},
+        {"name": "化學 220", "code": "CHEM220"},
+        {"name": "哲學 110", "code": "PHIL110"},
+        {"name": "英文 205", "code": "ENG205"},
+        {"name": "經濟學 201", "code": "ECON201"},
+        {"name": "資料科學 310", "code": "DS310"},
     ]
 
     upcoming = {
-        "course": "Math 101",
-        "when": "Mon 09:00–10:30",
-        "room": "Room A1",
-        "status": "Confirmed"
+        "course": "數學 101",
+        "when": "禮拜一 09:00–10:30",
+        "room": "A1 教室",
+        "status": "已確認"
     }
 
     return render_template(
@@ -192,7 +192,7 @@ def messages(chat_id):
         return redirect(url_for("index.login"))
     
     conversations = [
-        {"id": 1, "name": "Prof. Smith", "last_message": "See you in class!", "unread": 2},
+        {"id": 1, "name": "Smith 教授", "last_message": "See you in class!", "unread": 2},
         {"id": 2, "name": "Alice Johnson", "last_message": "Got it!", "unread": 0},
     ]
     active_chat = next((c for c in conversations if c["id"] == (chat_id or 1)), conversations[0])
@@ -221,9 +221,9 @@ def notifications():
         return redirect(url_for("index.login"))
     
     notifications = [
-        {"id": 1, "title": "New Assignment: Math Homework", "content": "Due tomorrow.", "type": "assignment", "time": "Today 10:00", "read": False, "important": True},
-        {"id": 2, "title": "System Update", "content": "Maintenance scheduled.", "type": "system", "time": "Yesterday 16:30", "read": True, "important": False},
-        {"id": 3, "title": "New Message from Prof. Lee", "content": "See you at 2 PM.", "type": "message", "time": "2 days ago", "read": False, "important": True},
+        {"id": 1, "title": "新作業：數學作業", "content": "明天截止", "type": "assignment", "time": "今天 10:00", "read": False, "important": True},
+        {"id": 2, "title": "系統更新", "content": "已安排維護", "type": "system", "time": "昨天 16:30", "read": True, "important": False},
+        {"id": 3, "title": "來自李教授的新消息", "content": "下午 2 點見", "type": "message", "time": "2 天前", "read": False, "important": True},
     ]
     return render_template("notifications.html", notifications=notifications, user=user)
 
@@ -250,13 +250,13 @@ def grades():
     # Example semester data
     semester_scores = {
         "2024 Spring": [
-            {"name": "Math 101", "credits": 3, "grade": "A", "score": 95, "passed": True},
-            {"name": "History 201", "credits": 2, "grade": "B", "score": 85, "passed": True},
+            {"name": "數學 101", "credits": 3, "grade": "A", "score": 95, "passed": True},
+            {"name": "歷史 201", "credits": 2, "grade": "B", "score": 85, "passed": True},
         ],
         "2024 Fall": [
-            {"name": "Physics 202", "credits": 4, "grade": "B+", "score": 88, "passed": True},
+            {"name": "物理 202", "credits": 4, "grade": "B+", "score": 88, "passed": True},
             {"name": "Chemistry 210", "credits": 3, "grade": "C", "score": 72, "passed": True},
-            {"name": "Philosophy 101", "credits": 2, "grade": "F", "score": 45, "passed": False},
+            {"name": "哲學 101", "credits": 2, "grade": "F", "score": 45, "passed": False},
         ],
         "2025 Spring": [
             {"name": "Biology 150", "credits": 3, "grade": "A-", "score": 91, "passed": True},
@@ -329,7 +329,7 @@ def course(course_id):
     # Full course catalog
     course_catalog = {
         "MATH101": {
-            "name": "Math 101",
+            "name": "數學 101",
             "code": "MATH101",
             "professor": "Dr. Alan Turing",
             "tas": ["Alice Wang", "Brian Chen"],
@@ -344,28 +344,28 @@ def course(course_id):
             ],
             "progress": {"completed": 5, "total": 10},
             "enrollment": 90,
-            "tags": ["Mathematics", "Core", "STEM"]
+            "tags": ["數學", "Core", "STEM"]
         },
         "PHYS202": {
-            "name": "Physics 202",
+            "name": "物理 202",
             "code": "PHYS202",
             "professor": "Dr. Marie Curie",
             "tas": ["David Lin", "Sophie Müller"],
             "description": "Classical mechanics with focus on dynamics, oscillations, and waves.",
             "materials": [
-                {"name": "Lab Manual", "url": "#"},
+                {"name": "試驗室 Manual", "url": "#"},
                 {"name": "Simulation Toolkit", "url": "#"}
             ],
             "reviews": [
-                {"user": "StudentZ", "rating": 5, "comment": "Labs are fun and engaging."},
+                {"user": "StudentZ", "rating": 5, "comment": "試驗室s are fun and engaging."},
                 {"user": "StudentW", "rating": 3, "comment": "Challenging exams."}
             ],
             "progress": {"completed": 7, "total": 12},
             "enrollment": 120,
-            "tags": ["Physics", "Laboratory", "Core"]
+            "tags": ["物理", "試驗室oratory", "Core"]
         },
         "HIST303": {
-            "name": "History 303",
+            "name": "歷史 303",
             "code": "HIST303",
             "professor": "Dr. Yuval Harari",
             "tas": ["Catherine Liu"],
@@ -379,7 +379,7 @@ def course(course_id):
             ],
             "progress": {"completed": 3, "total": 8},
             "enrollment": 60,
-            "tags": ["History", "Humanities"]
+            "tags": ["歷史", "Humanities"]
         },
         "CS404": {
             "name": "Computer Science 404",
@@ -405,11 +405,11 @@ def course(course_id):
             "professor": "Dr. Rosalind Franklin",
             "tas": ["Kunal Patel"],
             "description": "Foundations of molecular biology and genetics.",
-            "materials": [{"name": "Lab Notebook", "url": "#"}],
+            "materials": [{"name": "試驗室 Notebook", "url": "#"}],
             "reviews": [{"user": "StudentD", "rating": 5, "comment": "Hands-on labs are excellent."}],
             "progress": {"completed": 6, "total": 10},
             "enrollment": 100,
-            "tags": ["Biology", "Laboratory", "STEM"]
+            "tags": ["Biology", "試驗室oratory", "STEM"]
         },
         "CHEM220": {
             "name": "Chemistry 220",
@@ -424,7 +424,7 @@ def course(course_id):
             "tags": ["Chemistry", "Pre-Med"]
         },
         "PHIL110": {
-            "name": "Philosophy 110",
+            "name": "哲學 110",
             "code": "PHIL110",
             "professor": "Dr. Aristotle Papadopoulos",
             "tas": ["Nina Zhang"],
@@ -433,7 +433,7 @@ def course(course_id):
             "reviews": [{"user": "StudentF", "rating": 4, "comment": "Made me think deeply."}],
             "progress": {"completed": 8, "total": 10},
             "enrollment": 45,
-            "tags": ["Philosophy", "Humanities", "Elective"]
+            "tags": ["哲學", "Humanities", "Elective"]
         },
         "ENG205": {
             "name": "English Literature 205",

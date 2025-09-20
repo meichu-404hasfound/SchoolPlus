@@ -8,34 +8,33 @@
 
 <section class="py-5">
   <div class="container text-center">
-    <h1 class="display-5 fw-bold mb-3 gradient-text">Welcome to School+</h1>
+    <h1 class="display-5 fw-bold mb-3 gradient-text">歡迎使用 School+</h1>
     <p class="lead text-muted mb-4">
-      Your centralized platform for courses, grades, schedules, announcements, and more —
-      designed for students and teachers with clarity, accessibility, and smooth interactions.
+      您的課程、成績、行程、公告等集中平台—專為學生和教師設計，清晰易用，互動流暢。
     </p>
     <div class="row justify-content-center">
       <div class="col-md-6 col-lg-5">
         <div class="card rounded-3 shadow-soft hover-raise">
           <div class="card-body p-4">
-            <h5 class="mb-3">Quick Login</h5>
+            <h5 class="mb-3">快速登入</h5>
             <form action="{{ url_for('auth.login_get') }}" method="post" novalidate aria-label="Quick login form">
               <div class="mb-3">
-                <label for="account" class="form-label small">Account ID</label>
+                <label for="account" class="form-label small">身分證/居留證</label>
                 <input id="account" name="account" type="text" class="form-control rounded-pill"
-                  placeholder="Enter your ID">
+                  placeholder="輸入你的身分證/居留證">
               </div>
               <div class="mb-3">
-                <label for="password" class="form-label small">Password</label>
+                <label for="password" class="form-label small">密碼</label>
                 <input id="password" name="password" type="password" class="form-control rounded-pill"
                   placeholder="••••••••">
               </div>
               <div class="d-grid">
                 <button type="submit" class="btn btn-primary rounded-pill">
-                  <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                  <i class="bi bi-box-arrow-in-right me-1"></i> 登入
                 </button>
               </div>
               <div class="mt-2 text-center">
-                <a class="small" href="{{ url_for('auth.register') }}">Create an account</a>
+                <a class="small" href="{{ url_for('auth.register') }}">建立一個帳戶</a>
               </div>
               <div class="mb-3">
                 <label class="form-label small d-block">記住登入</label>
@@ -59,7 +58,7 @@
             </form>
             <hr>
             <div class="small text-muted">
-              <i class="bi bi-shield-lock me-1"></i> Secure login with institutional account.
+              <i class="bi bi-shield-lock me-1"></i>使用學校帳號安全登入
             </div>
           </div>
         </div>
