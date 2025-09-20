@@ -26,6 +26,7 @@ def login_post():
 
     user = User.query.get(account)
     if not user or not user.check_password(password):
+        print(user, password)
         flash("帳號或密碼錯誤。", "error")
         return render_template("login.html"), 401
 
