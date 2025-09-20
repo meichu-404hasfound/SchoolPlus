@@ -1,0 +1,272 @@
+{ System: Create a responsive school platform website (for students and teachers) using Bootstrap 5 for layout and components. The website must automatically scale down for mobile, tablet, and desktop screens with fluid grid and responsive typography.
+
+Theme & Style
+
+Overall Look: Clean, professional, approachable, and easy for students and teachers to navigate. Prioritize clarity and accessibility. Add animations for buttons, and make the website look appealing with animations
+
+Font: Use "Roboto", sans-serif as the main font for body text, and "Poppins", sans-serif for headings and UI elements.
+
+Font Sizes:
+
+Headings (h1–h6): scalable with Bootstrap’s responsive typography (e.g., h1 ~ 2.5rem desktop, 1.8rem mobile).
+
+Body text: 1rem (16px) base, line-height 1.6.
+
+Small notes/labels: 0.875rem (14px).
+
+Colors:
+
+Primary: #2C3E50 (dark navy blue).
+
+Secondary: #3498DB (bright school-blue).
+
+Accent: #F39C12 (warm yellow/orange for highlights).
+
+Success: #27AE60 (green, for confirmations).
+
+Danger: #E74C3C (red, for errors).
+
+Info: #2980B9 (blue, for information messages).
+
+Light background: #F9FAFB.
+
+Text primary: #212529 (dark gray/black).
+
+Text secondary: #6C757D (medium gray).
+
+Background:
+
+Use light background (#F9FAFB) for most pages.
+
+Navbar/footer: dark navy (#2C3E50) with white text.
+
+Cards and panels: white (#FFFFFF) with soft shadows.
+
+Spacing & Layout
+
+Spacing System: Bootstrap’s spacing utilities (multiples of 0.25rem).
+
+Section padding: py-5 (top and bottom 3rem).
+
+Card padding: p-3 (1rem).
+
+Grid gutters: default Bootstrap 1.5rem.
+
+Container Widths: Use .container-fluid for global layout, .container for content blocks.
+
+Cards: Rounded corners (.rounded-3), soft shadows (.shadow-sm), hover effect with slight scale-up.
+
+Buttons: Primary buttons (btn-primary) in bright school-blue with white text, rounded (.rounded-pill). Secondary buttons use outline styles.
+
+Navigation
+
+Navbar:
+
+Sticky top, dark navy background (#2C3E50).
+
+White text (#FFFFFF), hover state with blue (#3498DB).
+
+Dropdown menus styled with white background, dark text.
+
+Sidebar (if used):
+
+Collapsible on mobile.
+
+Light gray background (#F1F3F5) with blue active state.
+
+Forms
+
+Rounded inputs (.form-control.rounded-pill).
+
+Input background: white, border #CED4DA.
+
+Focus state: border changes to school-blue (#3498DB) with light shadow.
+
+Labels small but readable (0.9rem, medium gray).
+
+Tables
+
+Use .table.table-striped.table-hover.
+
+Header background: light navy tint (#EAF1F8).
+
+Row hover: light gray background.
+
+Responsive with .table-responsive.
+
+Alerts
+
+Success: green background with white text.
+
+Danger: red background with white text.
+
+Info: blue background with white text.
+
+Rounded corners, dismissible with an “x”.
+
+Responsive Design
+
+Mobile-first:
+
+Collapse navbar into hamburger menu on <768px.
+
+Stack cards and tables vertically.
+
+Reduce heading font sizes (Bootstrap responsive typography).
+
+Tablet/desktop:
+
+Use Bootstrap grid .col-md-6, .col-lg-4 for balanced layouts.
+
+Keep white space consistent to avoid clutter.
+
+Footer
+
+Dark navy background.
+
+Small white text with links highlighted in school-blue.
+
+Padding: py-4. 
+
+Code Organization
+
+Separate CSS and JavaScript:
+Add a javascript file for every page(if it contains js).
+
+Use jinja for html generation if possible. If it contains backend, add the routes for python flask.
+
+CSS:
+System: You are building a responsive school platform (for students and teachers) that uses Bootstrap 5 as the base and a custom theme defined in /static/css/styles.css. The CSS already includes:
+
+- Color system: (--sp-primary, --sp-secondary, --sp-accent, etc.)
+- Typography: Roboto for body, Poppins for headings, responsive font scaling
+- Components: navbar, sidebar, cards, buttons, forms, tables, alerts, footer
+- Animations: fade-in sections, hover lift on nav links, brand icon flip, gradient text, dropdown fade
+- Utilities: spacing helpers, shadows, rounded corners, pills, chips
+- Responsive rules for mobile-first scaling
+- Print styles for clean export
+
+### Rules for code generation
+1. **Never inline styles.** Always rely on Bootstrap classes or my CSS tokens/utilities.
+2. **Use Jinja templates** (Flask). Base template is base.html with `{% block title %}`, `{% block content %}`, `{% block extra_css %}`, `{% block extra_js %}`.
+3. **Keep HTML semantic** and accessible: proper headings, labels, aria attributes.
+4. **Navigation:** 
+   - Navbar is sticky-top, dark navy background, with gradient-text brand and animated icon.
+   - Sidebar (if used) collapses on mobile with smooth slide animation.
+5. **Cards:** Use `.card.rounded-3.shadow-soft.hover-raise` with `.card-body.p-3`.
+6. **Buttons:** `.btn.btn-primary` (rounded pill), `.btn-outline-secondary`, `.btn-accent` for highlights.
+7. **Forms:** `.form-control.rounded-pill`, `.form-label`, `.form-text`. Respect validation states.
+8. **Tables:** `.table.table-striped.table-hover` inside `.table-responsive`, header tint is handled by CSS.
+9. **Alerts:** Use `.alert.alert-success|danger|info` (already styled with rounded corners and dismissible).
+10. **Footer:** small, dark background with school-blue links. Keep compact with `py-2` or `py-3`.
+11. **Animations:** 
+    - Use `.animate-fade` for sections entering view.
+    - Navbar-brand has flipping `.brand-icon` only on hover.
+    - Links/buttons already have hover scaling built-in.
+12. **Responsiveness:** 
+    - Mobile-first. Collapse nav on <768px.
+    - Cards and tables stack vertically on small screens.
+    - Use `.col-md-6`, `.col-lg-4` for balanced layouts on desktop.
+13. **JS separation:** For interactivity (sidebar toggle, form validation, etc.), create a page-specific JS file under /static/js. Do not inline scripts.
+14. **Accessibility:** Ensure focus states use `:focus-visible`. Buttons and links must be keyboard accessible.
+
+### Deliverables format
+- HTML or Jinja templates (extending base.html).
+- Example pages (dashboard, courses, profile) that demonstrate cards, tables, forms, and alerts.
+- Flask routes (Blueprints preferred).
+- JS stubs for per-page interactivity.
+
+Important: Always assume my CSS is already loaded, and **only use classes/utilities defined in Bootstrap 5 or my CSS**. Do not re-declare them.
+
+When generating html, use this base.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}School Platform{% endblock %}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+        crossorigin="anonymous">
+    
+    <!-- Custom Theme CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm fancy-navbar">
+        <div class="container-fluid">
+            <!-- Brand -->
+            <a class="navbar-brand site-title fw-bold gradient-text display-4" href="{{ url_for('index.index') }}">
+                <i class="bi bi-mortarboard-fill me-2 brand-icon"></i> School+
+            </a>
+            <!-- Toggler -->
+            <button class="navbar-toggler border-0 shadow-sm" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Nav items -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint=='index.dashboard' %}active{% endif %}" href="{{ url_for('index.dashboard') }}">
+                            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint=='index.courses' %}active{% endif %}" href="{{ url_for('index.courses') }}">
+                            <i class="bi bi-journal-text me-1"></i> Courses
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint=='index.profile' %}active{% endif %}" href="{{ url_for('index.profile') }}">
+                            <i class="bi bi-person-circle me-1"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" 
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-gear me-1"></i> Account
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-3" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('auth.login') }}"><i class="bi bi-box-arrow-in-right me-1"></i> Login</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('auth.register') }}"><i class="bi bi-person-plus me-1"></i> Register</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}"><i class="bi bi-box-arrow-right me-1"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Optional Sidebar -->
+    {% block sidebar %}{% endblock %}
+
+    <!-- Main Content -->
+    <main class="container my-4 animate-fade">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Bootstrap JS Bundle -->
+    <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+        crossorigin="anonymous"></script>
+
+    <!-- Page-specific JS -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+}

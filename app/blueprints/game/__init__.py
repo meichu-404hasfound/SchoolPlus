@@ -1,0 +1,1 @@
+from .routes import game_bp
