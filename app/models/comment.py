@@ -16,4 +16,4 @@ class Comment(db.Model):
     upvote = db.Column(db.Integer, default=0, nullable=False)
 
     issue = db.relationship("Issue", back_populates="comments")
-    # author = db.relationship("User", back_populates="comments")
+    author = db.relationship("User", back_populates="comments")

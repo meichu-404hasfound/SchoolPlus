@@ -868,3 +868,17 @@ a:focus {
     text-decoration: underline;
   }
 }
+
+#chatbotFab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  z-index: 1050; /* stays above cards, but below modals */
+  transition: transform 0.2s ease-in-out;
+}
+
+#chatbotFab:hover {
+  transform: scale(1.1) rotate(5deg);
+}

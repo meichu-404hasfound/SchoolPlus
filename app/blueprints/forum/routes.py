@@ -3,15 +3,19 @@ from ...extensions import db
 from ...models.issue import Issue
 from ...models.comment import Comment
 from ...models.user import User
-from ...models.label import Label
 from ..utils import get_current_user
 from sqlalchemy import or_, func
 
-forum_bp = Blueprint("forum", __name__, url_prefix="/forum")
+forum_bp = Blueprint("forum", __name__)
 
 
-@forum_bp.get("/")
+@forum_bp.get("/forum")
 def forum_home():
+    user = get_current_user()
+    if not user:
+        flash("請先登入。")
+        return redirect(url_for("index.login"))
+
     # Your Jinja shell; frontend will fetch data via /api endpoints
     page = request.args.get("page", 1, type=int)
     per_page = request.args.get("per_page", 10, type=int)
@@ -23,12 +27,18 @@ def forum_home():
     # pass both the items and the pagination object into the template
     return render_template(
         "forum.html",
+        user=user,
         items=pagination.items,
         pagination=pagination,
     )
 
-@forum_bp.get("/issues/<int:issue_id>")
+@forum_bp.get("/forum/issues/<int:issue_id>")
 def forum_issue(issue_id: int):
+    user = get_current_user()
+    if not user:
+        flash("請先登入。")
+        return redirect(url_for("index.login"))
+
     page = request.args.get("page", 1, type=int)
     per_page = request.args.get("per_page", 10, type=int)
 
@@ -36,8 +46,15 @@ def forum_issue(issue_id: int):
     # keep the same pagination style you already use in /api/search
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
     issue = Issue.query.get_or_404(issue_id)
+    
     print(issue)
-    return render_template("forum.html", issue=issue, pagination=pagination)
+    
+    return render_template(
+        "forum.html",
+        user=user, 
+        issue=issue,
+        pagination=pagination
+    )
 
 def split_csv(csv: str):
     if not csv:
@@ -47,93 +64,80 @@ def split_csv(csv: str):
 def normalize_label(s: str):
     return (s or "").strip().lower()
 
-def ensure_label(name: str) -> Label:
-    """Get or create a label by normalized name."""
-    nm = normalize_label(name)
-    if not nm:
-        return None
-    ex = Label.query.filter_by(name=nm).first()
-    if ex:
-        return ex
-    l = Label(name=nm)
-    db.session.add(l)
-    return l
-
 # ---------- Create Issue ----------
-@forum_bp.post("/issues")
+@forum_bp.post("/forum/issues")
 def forum_create_issue():
-    # author_id   = (request.form.get("author_id")   or "").strip()  # users.account
-    author_name = (request.form.get("author_id") or "").strip()  # nickname shown on cards/detail
+    user = get_current_user()
+    if not user:
+        flash("請先登入。")
+        return redirect(url_for("index.login"))
+
     title       = (request.form.get("title")       or "").strip()
     body        = (request.form.get("body")        or "").strip()
-    category    = (request.form.get("category")    or "").strip()  # e.g., "clubs" | "class" | "fun"
-    extra_csv   = (request.form.get("labels")      or "").strip()  # optional comma labels
+    label   = (request.form.get("label")      or "").strip()  # optional comma labels
     
-    if (get_current_user() is None):
-        flash("Please login to post an issue", "error")
+    if not title:
+        flash("請輸入標題.", "error")
+        return redirect(url_for("forum.forum_home"))
+    
+    if not body:
+        flash("請輸入身體.", "error")
+        return redirect(url_for("forum.forum_home"))
+    
+    if not label:
+        flash("請輸入類別.", "error")
         return redirect(url_for("forum.forum_home"))
 
-    if not (title and body):
-        flash("author_id, author_name, title, and body are required.", "error")
-        return redirect(url_for("forum.forum_home"))
-
-    author = User.query.get(get_current_user().account)
-    if not author:
-        flash("Author account not found. Create the user first.", "error")
-        return redirect(url_for("forum.forum_home"))
-    issue = Issue(author_id=author.account, author_name=author_name, title=title, body=body)
-    # Primary category -> one label
-    if category:
-        lab = ensure_label(category)
-        if lab:
-            issue.labels.append(lab)
-
-    # Optional additional labels (comma-separated)
-    for name in split_csv(extra_csv):
-        lab = ensure_label(name)
-        if lab and lab not in issue.labels:
-            issue.labels.append(lab)
+    issue = Issue(author_id=user.account, title=title, body=body, label=label)
 
     db.session.add(issue)
     db.session.commit()
-    flash("Issue created.", "success")
+    
+    flash("成功發布Issue", "success")
+    
     return redirect(url_for("forum.forum_issue", issue_id=issue.id))
 
 # ---------- Comments ----------
-@forum_bp.post("/issues/<int:issue_id>/comments")
+@forum_bp.post("/forum/issues/<int:issue_id>/comments")
 def forum_add_comment(issue_id: int):
+    user = get_current_user()
+    if not user:
+        flash("請先登入。")
+        return redirect(url_for("index.login"))
+
     Issue.query.get_or_404(issue_id)
-    author_id = (request.form.get("author_id") or "").strip()
-    body      = (request.form.get("body")      or "").strip()
+    body = request.form.get("body", "").strip()
 
-    if not (author_id and body):
-        flash("author_id and body are required for comments.", "error")
+    if not body:
+        flash("請輸入文本。", "error")
         return redirect(url_for("forum.forum_issue", issue_id=issue_id))
 
-    if not User.query.get(author_id):
-        flash("Author account not found. Create the user first.", "error")
-        return redirect(url_for("forum.forum_issue", issue_id=issue_id))
-
-    c = Comment(author_id=author_id, issue_id=issue_id, body=body)
+    c = Comment(author_id=user.account, issue_id=issue_id, body=body)
     db.session.add(c)
     db.session.commit()
-    flash("Comment added.", "success")
+    
+    flash("成功發布回復。", "success")
     return redirect(url_for("forum.forum_issue", issue_id=issue_id))
 
 # ---------- Card list API (for the grid of cards) ----------
-@forum_bp.get("/api/issues")
+@forum_bp.get("/forum/api/issues")
 def api_list_issues():
     """
     Returns only what the cards need.
     Query params: page (default 1), per_page (default 20), label=category(optional)
     """
+    user = get_current_user()
+    if not user:
+        flash("請先登入。")
+        return redirect(url_for("index.login"))
+
     page     = request.args.get("page", 1, type=int)
     per_page = request.args.get("per_page", 20, type=int)
     label    = normalize_label(request.args.get("label"))
 
     q = Issue.query
     if label:
-        q = q.filter(Issue.labels.any(Label.name == label))
+        q = q.filter(Issue.labels.any(Issue.label == label))
 
     q = q.order_by(Issue.id.desc())
     pagination = q.paginate(page=page, per_page=per_page, error_out=False)
@@ -155,8 +159,13 @@ def api_list_issues():
     })
 
 # ---------- Issue detail API (for the 70% modal) ----------
-@forum_bp.get("/api/issues/<int:issue_id>")
+@forum_bp.get("/forum/api/issues/<int:issue_id>")
 def api_get_issue(issue_id: int):
+    user = get_current_user()
+    if not user:
+        flash("請先登入。")
+        return redirect(url_for("index.login"))
+
     i = Issue.query.get_or_404(issue_id)
     data = {
         "id": i.id,
@@ -176,8 +185,13 @@ def api_get_issue(issue_id: int):
     return jsonify(data)
 
 # ---------- Search (title tokens + labels) ----------
-@forum_bp.get("/api/search")
+@forum_bp.get("/forum/api/search")
 def api_search_issues():
+    user = get_current_user()
+    if not user:
+        flash("請先登入。")
+        return redirect(url_for("index.login"))
+
     qstr       = (request.args.get("q") or "").strip()
     label_csv  = (request.args.get("labels") or "").strip()
     label_mode = (request.args.get("label_mode") or "any").lower()
@@ -196,9 +210,9 @@ def api_search_issues():
     if names:
         if label_mode == "all":
             for name in names:
-                q = q.filter(Issue.labels.any(Label.name == name))
+                q = q.filter(Issue.label == name)
         else:
-            q = q.filter(Issue.labels.any(Label.name.in_(names)))
+            q = q.filter(Issue.label.in_(names))
 
     q = q.order_by(Issue.id.desc())
     pagination = q.paginate(page=page, per_page=per_page, error_out=False)
@@ -213,8 +227,13 @@ def api_search_issues():
     })
 
 # ---------- Upvote: issue + author tally ----------
-@forum_bp.post("/api/issues/<int:issue_id>/upvote")
+@forum_bp.post("/forum/api/issues/<int:issue_id>/upvote")
 def api_issue_upvote(issue_id: int):
+    user = get_current_user()
+    if not user:
+        flash("請先登入。")
+        return redirect(url_for("index.login"))
+
     issue = Issue.query.get_or_404(issue_id)
     issue.upvote = (issue.upvote or 0) + 1
 

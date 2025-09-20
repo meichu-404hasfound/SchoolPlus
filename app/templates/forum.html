@@ -3,70 +3,78 @@
 
 {% block content %}
 <section class="py-4">
-  <!-- Page header -->
-  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3">
+  <!-- Header -->
+  <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4">
     <div>
       <h1 class="h2 fw-bold mb-1">Forum</h1>
       <p class="text-secondary mb-0">Discuss coursework, announcements, and Q&A with classmates and teachers.</p>
     </div>
     <div class="mt-3 mt-md-0">
-      <button class="btn btn-primary rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#newIssueModal">
+      <button class="btn btn-primary rounded-pill shadow-soft animate-fade" data-bs-toggle="modal"
+        data-bs-target="#newIssueModal">
         <i class="bi bi-plus-circle me-1"></i> New Issue
       </button>
     </div>
   </div>
 
-  <!-- Cards grid -->
-  <div class="row g-3" id="issuesCardGrid">
+  <!-- Issue Cards -->
+  <div class="row g-4" id="issuesCardGrid">
     {% for issue in pagination.items %}
-      <div class="col-12 col-sm-6 col-lg-4">
-         <a class="card h-100 rounded-3 shadow-sm issue-card text-reset text-decoration-none"
-          href="{{ url_for('forum.forum_issue', issue_id=issue.id, page=pagination.page) }}"
-          data-issue-id="{{ issue.id }}">
-        
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-              <h5 class="card-title mb-2 text-truncate" title="{{ issue.title }}">{{ issue.title }}</h5>
-              <span class="badge text-bg-light">{{ issue.upvote }} 👍</span>
-            </div>
-            <p class="card-text text-secondary small mb-3 text-truncate" style="max-width: 100%;" title="{{ issue.body }}">
-              {{ issue.body }}
-            </p>
-            <div class="d-flex align-items-center justify-content-between">
-              <span class="small text-muted">Author: <span class="badge text-bg-light border">{{ issue.author_id }}</span></span>
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card h-100 rounded-3 shadow-soft hover-raise">
+        <div class="card-body d-flex flex-column">
+          <!-- Title + upvotes -->
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <h5 class="card-title fw-bold text-truncate mb-0" title="{{ issue.title }}">
+              <a href="{{ url_for('forum.forum_issue', issue_id=issue.id, page=pagination.page) }}"
+                class="text-reset text-decoration-none">{{ issue.title }}</a>
+            </h5>
+            <span class="badge bg-light text-dark">{{ issue.upvote }} 👍</span>
+          </div>
+
+          <!-- Body preview -->
+          <p class="card-text text-secondary small flex-grow-1 text-truncate" title="{{ issue.body }}">
+            {{ issue.body }}
+          </p>
+
+          <!-- Footer meta -->
+          <div class="mt-3">
+            <div class="d-flex justify-content-between align-items-center small">
+              <span class="text-muted">Author:
+                <span class="badge bg-light border text-dark">{{ issue.author_id }}</span>
+              </span>
               <div class="d-inline-flex gap-1 flex-wrap">
                 {% for label in issue.labels %}
-                  <span class="badge rounded-pill text-bg-secondary">{{ label.name if label.name else label }}</span>
+                <span class="badge rounded-pill bg-secondary">{{ label.name if label.name else label }}</span>
                 {% endfor %}
               </div>
             </div>
           </div>
-          <div class="card-footer bg-transparent border-0 pt-0">
-
-            <div class="d-flex justify-content-end gap-2">
-               <button class="btn btn-outline-secondary btn-sm rounded-pill"
-                  href="{{ url_for('forum.forum_issue', issue_id=issue.id, page=pagination.page) }}">
-                <i class="bi bi-chat-dots"></i> Comments
-              </button>
-              
-              <button class="btn btn-accent btn-sm rounded-pill"
-                      href="{{ url_for('forum.forum_issue', issue_id=issue.id, page=pagination.page) }}">
-                <i class="bi bi-hand-thumbs-up"></i> Upvote
-              </button>
-            </div>
+        </div>
+        <div class="card-footer bg-transparent border-0 pt-0">
+          <div class="d-flex justify-content-end gap-2">
+            <a class="btn btn-outline-secondary btn-sm rounded-pill"
+              href="{{ url_for('forum.forum_issue', issue_id=issue.id, page=pagination.page) }}">
+              <i class="bi bi-chat-dots me-1"></i> Comments
+            </a>
+            <a class="btn btn-accent btn-sm rounded-pill"
+              href="{{ url_for('forum.forum_issue', issue_id=issue.id, page=pagination.page) }}">
+              <i class="bi bi-hand-thumbs-up me-1"></i> Upvote
+            </a>
           </div>
-        </a>
+        </div>
       </div>
+    </div>
     {% else %}
-      <div class="col-12">
-        <div class="text-center text-secondary py-4">No issues yet. Be the first to post!</div>
-      </div>
+    <div class="col-12">
+      <div class="text-center text-secondary py-5">No issues yet. Be the first to post!</div>
+    </div>
     {% endfor %}
   </div>
 
   <!-- Pagination -->
   {% if pagination.pages > 1 %}
-  <nav class="mt-3" aria-label="Forum pagination">
+  <nav class="mt-4" aria-label="Forum pagination">
     <ul class="pagination justify-content-center mb-0">
       <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
         <a class="page-link" href="{{ url_for('forum.forum_home', page=pagination.prev_num) }}" aria-label="Previous">
@@ -74,9 +82,9 @@
         </a>
       </li>
       {% for p in range(1, pagination.pages + 1) %}
-        <li class="page-item {% if pagination.page == p %}active{% endif %}">
-          <a class="page-link" href="{{ url_for('forum.forum_home', page=p) }}">{{ p }}</a>
-        </li>
+      <li class="page-item {% if pagination.page == p %}active{% endif %}">
+        <a class="page-link" href="{{ url_for('forum.forum_home', page=p) }}">{{ p }}</a>
+      </li>
       {% endfor %}
       <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
         <a class="page-link" href="{{ url_for('forum.forum_home', page=pagination.next_num) }}" aria-label="Next">
@@ -88,22 +96,16 @@
   {% endif %}
 </section>
 
-<!-- Create Issue Modal -->
+<!-- New Issue Modal -->
 <div class="modal fade" id="newIssueModal" tabindex="-1" aria-labelledby="newIssueModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-3 shadow-sm">
+    <div class="modal-content rounded-3 shadow-soft">
       <div class="modal-header">
         <h5 class="modal-title fw-bold" id="newIssueModalLabel">Create New Issue</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <!-- Note: backend expects author_id, title, body, and optionally labels (CSV) -->
       <form method="post" action="{{ url_for('forum.forum_create_issue') }}" novalidate>
         <div class="modal-body">
-          <div class="mb-3">
-            <label for="authorId" class="form-label small">Author account</label>
-            <input id="authorId" name="author_id" class="form-control rounded-pill" maxlength="9" required>
-            <div class="form-text">Your school account (9 characters).</div>
-          </div>
           <div class="mb-3">
             <label for="issueTitle" class="form-label small">Title</label>
             <input id="issueTitle" name="title" class="form-control rounded-pill" maxlength="200" required>
@@ -112,54 +114,54 @@
             <label for="issueBody" class="form-label small">Body</label>
             <textarea id="issueBody" name="body" class="form-control" rows="4" required></textarea>
           </div>
-          <!-- Category => submit as single label (compatible with your routes) -->
           <div class="mb-3">
             <label for="issueCategory" class="form-label small">Category</label>
-            <select id="issueCategory" name="labels" class="form-select rounded-pill">
+            <select id="issueCategory" name="label" class="form-select rounded-pill">
               <option value="">(none)</option>
               <option value="clubs">Clubs</option>
               <option value="class">Class</option>
               <option value="fun">Fun</option>
             </select>
-            <div class="form-text">You can add more labels later; this sets one primary category.</div>
+            <div class="form-text">This sets one primary category. You can add more later.</div>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-outline-secondary rounded-pill" type="button" data-bs-dismiss="modal">Cancel</button>
-          <button class="btn btn-primary rounded-pill" type="submit"><i class="bi bi-send me-1"></i> Post</button>
+          <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary rounded-pill"><i class="bi bi-send me-1"></i> Post</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
+<!-- Issue Detail Modal -->
 {% if issue %}
-<!-- Issue Detail Modal (70% width) -->
-<div class="modal fade" id="issueModal" tabindex="-1" aria-labelledby="issueModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl" style="--bs-modal-width: 70vw;">
-    <div class="modal-content rounded-3 shadow-sm">
+<div class="modal" id="issueModal" tabindex="-1" aria-labelledby="issueModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content rounded-3 shadow-soft">
       <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="issueModalLabel">Issue</h5>
+        <h5 class="modal-title fw-bold" id="issueModalLabel">{{ issue.title }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Filled dynamically -->
-        <div id="issueDetail" class="mb-3">
-          <p class="card-text text-secondary small mb-3 text-truncate" style="max-width: 100%;" title="{{ issue.body }}">
-              {{ issue.body }}
-        </p>
-        </div>
+        <p class="text-secondary small">{{ issue.body }}</p>
         <hr class="my-3">
         <h6 class="fw-bold mb-3">Comments</h6>
-        <div id="commentsList" class="vstack gap-3 mb-3"></div>
-        <form id="commentForm" class="needs-validation" novalidate>
-          <div class="row g-2 align-items-end">
-            <div class="col-md-8">
-              <label for="commentBody" class="form-label small">Comment</label>
-              <input id="commentBody" name="body" class="form-control rounded-pill" required>
-            </div>
+        <div id="commentsList" class="vstack gap-3 mb-3">
+          {% for comment in issue.comments %}
+          <div class="p-2 rounded-3 bg-light shadow-sm">
+            <span class="fw-bold">{{ comment.author }}</span>
+            <p class="mb-0 small">{{ comment.body }}</p>
           </div>
-          <div class="text-end mt-3">
+          {% endfor %}
+        </div>
+        <form id="commentForm" method="post" action="{{ url_for('forum.forum_add_comment', issue_id=issue.id) }}"
+          novalidate>
+          <div class="mb-3">
+            <label for="commentBody" class="form-label small">Comment</label>
+            <input id="commentBody" name="body" class="form-control rounded-pill" required>
+          </div>
+          <div class="text-end">
             <button class="btn btn-primary rounded-pill" type="submit">
               <i class="bi bi-chat-left-text me-1"></i> Add Comment
             </button>
@@ -167,12 +169,10 @@
         </form>
       </div>
       <div class="modal-footer d-flex justify-content-between">
-        <div class="small text-muted" id="issueMeta"></div>
-        <div>
-          <button class="btn btn-accent rounded-pill" id="modalUpvoteBtn">
-            <i class="bi bi-hand-thumbs-up"></i> <span id="modalUpvoteCount">0</span>
-          </button>
-        </div>
+        <div class="small text-muted">Author: {{ issue.author_id }} · {{ issue.created_at }}</div>
+        <button class="btn btn-accent rounded-pill" id="modalUpvoteBtn">
+          <i class="bi bi-hand-thumbs-up me-1"></i> {{ issue.upvote }}
+        </button>
       </div>
     </div>
   </div>
@@ -182,4 +182,17 @@
 
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/forum.js') }}"></script>
+{% if issue %}
+<script>
+  window.addEventListener("load", () => {
+    const modalEl = document.getElementById("issueModal");
+    if (!modalEl) return;
+    const issueModal = bootstrap.Modal.getOrCreateInstance(modalEl);
+
+    // now you can safely show it without making a duplicate
+      issueModal.show();
+  });
+</script>
+
+{% endif %}
 {% endblock %}

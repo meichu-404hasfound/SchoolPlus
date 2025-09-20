@@ -3,6 +3,7 @@ from ..utils import get_current_user, is_valid_avatar_url
 
 from ...extensions import db
 from ...models.user import User
+from ...models.issue import Issue
 
 index_bp = Blueprint("index", __name__)
 
@@ -25,10 +26,13 @@ def index():
     if not user:
         flash("請先登入。", "error")
         return redirect(url_for("auth.login_get"))
-
+    
+    issue = Issue.query.order_by(Issue.upvote).first()
+    
     return render_template(
         "index.html",
         user=user,
+        issue=issue,
         announcements=announcements,
         upcoming=upcoming
     )
@@ -60,13 +64,13 @@ def profile_post():
     
     if avatar_url and not is_valid_avatar_url(avatar_url):
         flash("無效的頭像網址。", "error")
-        return redirect(url_for("index.profile"))
+        return redirect(url_for("index.profile_get"))
     
     user.avatar_url = avatar_url
     db.session.commit()
     
     flash("個人資料已更新。", "success")
-    return redirect(url_for("index.profile"))
+    return redirect(url_for("index.profile_get"))
 
 @index_bp.post("/profile/update_password")
 def profile_update_password():
@@ -80,21 +84,21 @@ def profile_update_password():
         
     if not user.check_password(current_password):
         flash("帳號或密碼錯誤。", "error")
-        return redirect(url_for("index.profile"))
+        return redirect(url_for("index.profile_get"))
     
     if current_password != new_password:
         flash("新密碼不一致。", "error")
-        return redirect(url_for("index.profile"))
+        return redirect(url_for("index.profile_get"))
 
     if len(new_password) < 4 or len(new_password) > 20:
         flash("密碼需為 4 到 20 碼。", "error")
-        return redirect(url_for("index.profile"))
+        return redirect(url_for("index.profile_get"))
 
     user.set_password(new_password)
     db.session.commit()
     
     flash("密碼已更新。", "success")
-    return redirect(url_for("index.profile"))
+    return redirect(url_for("index.profile_get"))
 
 
 @index_bp.route("/dashboard")

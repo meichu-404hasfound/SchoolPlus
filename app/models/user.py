@@ -21,6 +21,18 @@ class User(db.Model):
         cascade="all, delete-orphan"
     )
     
+    comments = db.relationship(
+        "Comment",
+        back_populates="author",
+        cascade="all, delete-orphan"
+    )
+    
+    issues = db.relationship(
+        "Issue",
+        back_populates="author",
+        cascade="all, delete-orphan"
+    )
+    
     def set_password(self, password: str):
         self.password_hash = generate_password_hash(password)
 
