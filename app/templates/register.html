@@ -12,14 +12,18 @@
         <div class="card rounded-3 shadow-soft hover-raise">
           <div class="card-body p-4">
             <h3 class="fw-bold mb-3 text-center">Create Account</h3>
-            <form action="{{ url_for('auth.register') }}" method="post" novalidate aria-label="Registration form">
+            <form action="{{ url_for('auth.register_post') }}" method="post" novalidate aria-label="Registration form">
               <div class="mb-3">
-                <label for="account_id" class="form-label small">Account ID</label>
-                <input id="account_id" name="account_id" type="text" class="form-control rounded-pill" placeholder="Choose a unique ID" required>
+                <label for="account" class="form-label small">Account ID</label>
+                <input id="account" name="account" type="text" class="form-control rounded-pill" placeholder="Choose a unique ID" required>
               </div>
               <div class="mb-3">
                 <label for="password" class="form-label small">Password</label>
                 <input id="password" name="password" type="password" class="form-control rounded-pill" placeholder="••••••••" required>
+              </div>
+              <div class="mb-3">
+                <label for="confirm" class="form-label small">Confirm Password</label>
+                <input id="confirm" name="confirm" type="password" class="form-control rounded-pill" placeholder="••••••••" required>
               </div>
               <div class="mb-3">
                 <label for="name" class="form-label small">Full Name</label>
@@ -35,7 +39,7 @@
                 </button>
               </div>
               <div class="mt-2 text-center">
-                <a class="small" href="{{ url_for('auth.login') }}">Already have an account? Sign in</a>
+                <a class="small" href="{{ url_for('auth.login_get') }}">Already have an account? Sign in</a>
               </div>
             </form>
             <hr>

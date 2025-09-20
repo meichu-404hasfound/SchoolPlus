@@ -417,13 +417,29 @@ a:hover, a:focus {
   border-radius: .75rem;
   box-shadow: var(--sp-shadow-soft);
 }
-.alert-success { background: var(--sp-success); }
-.alert-danger  { background: var(--sp-danger); }
-.alert-info    { background: var(--sp-info); }
+/* Force visible alerts on white background */
+.alert-success {
+  background-color: #27ae60 !important; /* strong green */
+  color: #fff !important;
+}
+.alert-danger,
+.alert-error {
+  background-color: #e74c3c !important; /* strong red */
+  color: #fff !important;
+}
+.alert-warning {
+  background-color: #f39c12 !important; /* orange/yellow */
+  color: #fff !important;
+}
+.alert-info {
+  background-color: #2980b9 !important; /* blue */
+  color: #fff !important;
+}
+/* Ensure close button shows up on colored alerts */
 .alert .btn-close {
   filter: invert(1) grayscale(100%) brightness(200%);
-  opacity: .9;
 }
+
 .alert .btn-close:hover { opacity: 1; }
 
 /* -----------------------------
