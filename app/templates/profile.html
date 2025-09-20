@@ -4,144 +4,142 @@
 
 {% block content %}
 <section class="py-5">
-  <div class="container">
-    <h2 class="fw-bold mb-4">My Profile</h2>
+    <div class="container">
+        <h2 class="fw-bold mb-4">My Profile</h2>
 
-    <!-- Profile Header Card -->
-    <div class="card rounded-3 shadow-soft hover-raise mb-4">
-      <div class="card-body p-4 d-flex align-items-center">
-        <!-- Avatar -->
-        {% if user.avatar_url %}
-          <img src="{{ user.avatar_url }}" alt="{{ user.display_name }} avatar"
-               class="rounded-circle me-4" width="120" height="120">
-        {% else %}
-          <i class="bi bi-person-circle text-secondary me-4" style="font-size: 6rem;"></i>
-        {% endif %}
+        <!-- Profile Header Card -->
+        <div class="card rounded-3 shadow-soft hover-raise mb-4">
+            <div class="card-body p-4 d-flex align-items-center">
+                <!-- Avatar -->
+                {% if user.avatar_url %}
+                <img src="{{ user.avatar_url }}" alt="{{ user.display_name }} avatar" class="rounded-circle me-4"
+                    width="120" height="120">
+                {% else %}
+                <i class="bi bi-person-circle text-secondary me-4" style="font-size: 6rem;"></i>
+                {% endif %}
 
-        <!-- Name Info -->
-        <div>
-          <h3 class="mb-1">{{ user.name }}</h3>
-          <p class="text-muted mb-2">@{{ user.display_name }}</p>
-          <span class="badge bg-info rounded-pill">Student</span>
-          <!-- You can swap this badge based on role -->
+                <!-- Name Info -->
+                <div>
+                    <h3 class="mb-1">{{ user.name }}</h3>
+                    <p class="text-muted mb-2">@{{ user.display_name }}</p>
+                    <span class="badge bg-info rounded-pill">Student</span>
+                    <!-- You can swap this badge based on role -->
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Tabs for profile sections -->
-    <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info"
-                type="button" role="tab" aria-controls="info" aria-selected="true">
-          <i class="bi bi-person-lines-fill me-1"></i> Info
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings"
-                type="button" role="tab" aria-controls="settings" aria-selected="false">
-          <i class="bi bi-gear me-1"></i> Settings
-        </button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security"
-                type="button" role="tab" aria-controls="security" aria-selected="false">
-          <i class="bi bi-shield-lock me-1"></i> Security
-        </button>
-      </li>
-    </ul>
-
-    <!-- Tab Content -->
-    <div class="tab-content" id="profileTabsContent">
-      <!-- Info -->
-      <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
-        <div class="card rounded-3 shadow-sm mb-4">
-          <div class="card-body p-4">
-            <h5 class="fw-semibold mb-3">Account Information</h5>
-            <dl class="row mb-0">
-              <dt class="col-sm-3">Account ID</dt>
-              <dd class="col-sm-9">{{ user.account_id }}</dd>
-
-              <dt class="col-sm-3">Name</dt>
-              <dd class="col-sm-9">{{ user.name }}</dd>
-
-              <dt class="col-sm-3">Display Name</dt>
-              <dd class="col-sm-9">{{ user.display_name }}</dd>
-
-              <dt class="col-sm-3">Email</dt>
-              <dd class="col-sm-9">{{ user.email or "Not provided" }}</dd>
-
-              <dt class="col-sm-3">Role</dt>
-              <dd class="col-sm-9">{{ user.role or "Student" }}</dd>
-
-              <dt class="col-sm-3">Joined</dt>
-              <dd class="col-sm-9">{{ user.joined or "—" }}</dd>
-            </dl>
-          </div>
-        </div>
-      </div>
-
-      <!-- Settings -->
-      <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-        <div class="card rounded-3 shadow-sm mb-4">
-          <div class="card-body p-4">
-            <h5 class="fw-semibold mb-3">Update Profile</h5>
-            <form action="{{ url_for('index.profile') }}" method="post" novalidate>
-              <div class="mb-3">
-                <label for="display_name" class="form-label small">Display Name</label>
-                <input id="display_name" name="display_name" type="text"
-                       class="form-control rounded-pill"
-                       value="{{ user.display_name }}">
-              </div>
-              <div class="mb-3">
-                <label for="avatar_url" class="form-label small">Avatar URL</label>
-                <input id="avatar_url" name="avatar_url" type="url"
-                       class="form-control rounded-pill"
-                       value="{{ user.avatar_url }}">
-                <div class="form-text">Provide a link to your image (jpg, png, etc.).</div>
-              </div>
-              <div class="d-grid">
-                <button type="submit" class="btn btn-primary rounded-pill">
-                  <i class="bi bi-save me-1"></i> Save Changes
+        <!-- Tabs for profile sections -->
+        <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button"
+                    role="tab" aria-controls="info" aria-selected="true">
+                    <i class="bi bi-person-lines-fill me-1"></i> Info
                 </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <!-- Security -->
-      <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
-        <div class="card rounded-3 shadow-sm mb-4">
-          <div class="card-body p-4">
-            <h5 class="fw-semibold mb-3">Change Password</h5>
-            <form action="{{ url_for('index.profile') }}" method="post" novalidate>
-              <div class="mb-3">
-                <label for="current_password" class="form-label small">Current Password</label>
-                <input id="current_password" name="current_password" type="password"
-                       class="form-control rounded-pill" placeholder="••••••••">
-              </div>
-              <div class="mb-3">
-                <label for="new_password" class="form-label small">New Password</label>
-                <input id="new_password" name="new_password" type="password"
-                       class="form-control rounded-pill" placeholder="••••••••">
-              </div>
-              <div class="mb-3">
-                <label for="confirm_password" class="form-label small">Confirm Password</label>
-                <input id="confirm_password" name="confirm_password" type="password"
-                       class="form-control rounded-pill" placeholder="••••••••">
-              </div>
-              <div class="d-grid">
-                <button type="submit" class="btn btn-accent rounded-pill">
-                  <i class="bi bi-shield-lock me-1"></i> Update Password
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button"
+                    role="tab" aria-controls="settings" aria-selected="false">
+                    <i class="bi bi-gear me-1"></i> Settings
                 </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button"
+                    role="tab" aria-controls="security" aria-selected="false">
+                    <i class="bi bi-shield-lock me-1"></i> Security
+                </button>
+            </li>
+        </ul>
 
-  </div>
+        <!-- Tab Content -->
+        <div class="tab-content" id="profileTabsContent">
+            <!-- Info -->
+            <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+                <div class="card rounded-3 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-semibold mb-3">Account Information</h5>
+                        <dl class="row mb-0">
+                            <dt class="col-sm-3">Account ID</dt>
+                            <dd class="col-sm-9">{{ user.account_id }}</dd>
+
+                            <dt class="col-sm-3">Name</dt>
+                            <dd class="col-sm-9">{{ user.name }}</dd>
+
+                            <dt class="col-sm-3">Display Name</dt>
+                            <dd class="col-sm-9">{{ user.display_name }}</dd>
+
+                            <dt class="col-sm-3">Email</dt>
+                            <dd class="col-sm-9">{{ user.email or "Not provided" }}</dd>
+
+                            <dt class="col-sm-3">Role</dt>
+                            <dd class="col-sm-9">{{ user.role or "Student" }}</dd>
+
+                            <dt class="col-sm-3">Joined</dt>
+                            <dd class="col-sm-9">{{ user.joined or "—" }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <div class="card rounded-3 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-semibold mb-3">Update Profile</h5>
+                        <form action="{{ url_for('index.profile_post') }}" method="post" novalidate>
+                            <div class="mb-3">
+                                <label for="display_name" class="form-label small">Display Name</label>
+                                <input id="display_name" name="display_name" type="text"
+                                    class="form-control rounded-pill" value="{{ user.display_name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="avatar_url" class="form-label small">Avatar URL</label>
+                                <input id="avatar_url" name="avatar_url" type="url" class="form-control rounded-pill"
+                                    value="{{ user.avatar_url }}">
+                                <div class="form-text">Provide a link to your image (jpg, png, etc.).</div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary rounded-pill">
+                                    <i class="bi bi-save me-1"></i> Save Changes
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security -->
+            <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                <div class="card rounded-3 shadow-sm mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="fw-semibold mb-3">Change Password</h5>
+                        <form action="{{ url_for('index.profile_update_password') }}" method="post" novalidate>
+                            <div class="mb-3">
+                                <label for="current_password" class="form-label small">Current Password</label>
+                                <input id="current_password" name="current_password" type="password"
+                                    class="form-control rounded-pill" placeholder="••••••••">
+                            </div>
+                            <div class="mb-3">
+                                <label for="new_password" class="form-label small">New Password</label>
+                                <input id="new_password" name="new_password" type="password"
+                                    class="form-control rounded-pill" placeholder="••••••••">
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirm_password" class="form-label small">Confirm Password</label>
+                                <input id="confirm_password" name="confirm_password" type="password"
+                                    class="form-control rounded-pill" placeholder="••••••••">
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-accent rounded-pill">
+                                    <i class="bi bi-shield-lock me-1"></i> Update Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </section>
 {% endblock %}
 

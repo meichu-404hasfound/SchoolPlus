@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Settings · School Platform{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <div class="container">
+    <h2 class="fw-bold mb-4">Settings</h2>
+
+    <div class="row g-4">
+      <!-- Appearance -->
+      <div class="col-md-6">
+        <div class="card rounded-3 shadow-soft hover-raise">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-palette-fill me-2 text-primary"></i> Appearance</h5>
+            <form>
+              <div class="mb-3">
+                <label class="form-label small">Theme</label>
+                <select class="form-select rounded-pill">
+                  <option>Light</option>
+                  <option>Dark</option>
+                  <option>System Default</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small">Font Size</label>
+                <input type="range" class="form-range" min="12" max="20" step="1">
+              </div>
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="animations" checked>
+                <label class="form-check-label small" for="animations">Enable animations</label>
+              </div>
+              <button class="btn btn-sm btn-primary rounded-pill">Save Appearance</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accessibility -->
+      <div class="col-md-6">
+        <div class="card rounded-3 shadow-soft hover-raise">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-universal-access-circle me-2 text-success"></i> Accessibility</h5>
+            <form>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="highContrast">
+                <label class="form-check-label small" for="highContrast">High contrast mode</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="screenReader">
+                <label class="form-check-label small" for="screenReader">Screen reader optimizations</label>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small">Text-to-Speech Speed</label>
+                <select class="form-select rounded-pill">
+                  <option>Slow</option>
+                  <option selected>Normal</option>
+                  <option>Fast</option>
+                </select>
+              </div>
+              <button class="btn btn-sm btn-primary rounded-pill">Save Accessibility</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy -->
+      <div class="col-md-6">
+        <div class="card rounded-3 shadow-soft hover-raise">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-shield-lock-fill me-2 text-danger"></i> Privacy</h5>
+            <form>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="searchVisibility" checked>
+                <label class="form-check-label small" for="searchVisibility">Allow my profile to appear in searches</label>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small">Who can message me?</label>
+                <select class="form-select rounded-pill">
+                  <option>Everyone</option>
+                  <option>Only classmates</option>
+                  <option>Only teachers</option>
+                  <option>No one</option>
+                </select>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="dataSharing">
+                <label class="form-check-label small" for="dataSharing">Share anonymized data for research</label>
+              </div>
+              <button class="btn btn-sm btn-primary rounded-pill">Save Privacy</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data & Storage -->
+      <div class="col-md-6">
+        <div class="card rounded-3 shadow-soft hover-raise">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-hdd-fill me-2 text-info"></i> Data & Storage</h5>
+            <form>
+              <div class="mb-3">
+                <label class="form-label small">Cache Size</label>
+                <div class="d-flex justify-content-between">
+                  <span class="small text-muted">120 MB</span>
+                  <button type="button" class="btn btn-sm btn-outline-danger rounded-pill">Clear Cache</button>
+                </div>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="offlineMode">
+                <label class="form-check-label small" for="offlineMode">Enable offline mode</label>
+              </div>
+              <div class="mb-3">
+                <label class="form-label small">Auto-download course materials</label>
+                <select class="form-select rounded-pill">
+                  <option>Wi-Fi only</option>
+                  <option>Wi-Fi & Mobile Data</option>
+                  <option>Never</option>
+                </select>
+              </div>
+              <button class="btn btn-sm btn-primary rounded-pill">Save Data Settings</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Integrations -->
+      <div class="col-md-12">
+        <div class="card rounded-3 shadow-soft hover-raise">
+          <div class="card-body">
+            <h5 class="fw-bold mb-3"><i class="bi bi-plug-fill me-2 text-warning"></i> Integrations</h5>
+            <form>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="googleCalendar" checked>
+                <label class="form-check-label small" for="googleCalendar">Sync with Google Calendar</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="microsoftTeams">
+                <label class="form-check-label small" for="microsoftTeams">Integrate with Microsoft Teams</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="slackIntegration">
+                <label class="form-check-label small" for="slackIntegration">Slack notifications for group projects</label>
+              </div>
+              <button class="btn btn-sm btn-primary rounded-pill">Save Integrations</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

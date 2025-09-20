@@ -19,7 +19,10 @@ class DevConfig(Config):
     SQLALCHEMY_DATABASE_URI = (
         f"sqlite:///{INSTANCE_DIR / 'app.db'}"
     )
-    SQLALCHEMY_ENGINE_OPTIONS = {"poolclass": NullPool}
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "poolclass": NullPool,
+        "pool_pre_ping": True,
+    }
     
     SESSION_COOKIE_SECURE = True
     SESSION_COOKIE_HTTPONLY = True

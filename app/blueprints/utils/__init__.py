@@ -1,11 +1,14 @@
 from flask import session, redirect, url_for
 from functools import wraps
 from re import fullmatch
+from urllib.request import Request, urlopen
+from urllib.error import URLError
+from urllib.parse import urlparse
 
 from ...models.user import User
 from ...models.admin import Admin
 
-def get_current_user():
+def get_current_user() -> User:
     account = session.get("account")
     if not account:
         return None
@@ -35,3 +38,16 @@ def admin_required(f):
             return redirect(url_for("main.index"))
         return f(*args, **kwargs)
     return wrapper
+
+def is_valid_avatar_url(url: str) -> bool:
+    parsed = urlparse(url)
+    if not (parsed.scheme in ("http", "https") and parsed.netloc):
+        return False
+
+    try:
+        req = Request(url, method="HEAD")
+        with urlopen(req, timeout=5) as resp:
+            content_type = resp.headers.get("Content-Type", "").lower()
+            return content_type.startswith("image/")
+    except URLError:
+        return False

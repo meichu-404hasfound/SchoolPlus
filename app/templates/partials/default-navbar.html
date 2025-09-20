@@ -7,8 +7,7 @@
 
         <!-- Toggler -->
         <button class="navbar-toggler border-0 shadow-sm" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                aria-label="Toggle navigation">
+            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -17,19 +16,25 @@
             <ul class="navbar-nav align-items-lg-center">
                 <li class="nav-item">
                     <a class="nav-link {% if request.endpoint=='index.dashboard' %}active{% endif %}"
-                       href="{{ url_for('index.dashboard') }}">
+                        href="{{ url_for('index.dashboard') }}">
                         <i class="bi bi-speedometer2 me-1"></i> Dashboard
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint=='index.dashboard' %}active{% endif %}"
+                        href="{{ url_for('index.grades') }}">
+                        <i class="bi bi-journal-bookmark-fill me-1"></i> Grades
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {% if request.endpoint=='index.courses' %}active{% endif %}"
-                       href="{{ url_for('index.courses') }}">
+                        href="{{ url_for('index.courses') }}">
                         <i class="bi bi-journal-text me-1"></i> Courses
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.endpoint=='index.profile' %}active{% endif %}"
-                       href="{{ url_for('index.profile') }}">
+                        href="{{ url_for('index.profile_get') }}">
                         <i class="bi bi-person-circle me-1"></i> Profile
                     </a>
                 </li>
@@ -37,57 +42,58 @@
                 <!-- Account dropdown -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
-                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
 
                         {% if user %}
-                            <!-- Avatar + name if logged in -->
-                            {% if user.avatar_url %}
-                                <img src="{{ user.avatar_url }}" alt=""
-                                    class="rounded-circle me-2" width="28" height="28">
-                            {% else %}
-                                <i class="bi bi-person-circle fs-4 me-2"></i>
-                            {% endif %}                            
-                            {{ user.name }}
+                        <!-- Avatar + name if logged in -->
+                        {% if user.avatar_url %}
+                        <img src="{{ user.avatar_url }}" alt="" class="rounded-circle me-2" width="28" height="28">
                         {% else %}
-                            <!-- Generic icon if guest -->
-                            <i class="bi bi-gear me-1"></i> Account
+                        <i class="bi bi-person-circle fs-4 me-2"></i>
+                        {% endif %}
+                        {{ user.name }}
+                        {% else %}
+                        <!-- Generic icon if guest -->
+                        <i class="bi bi-gear me-1"></i> Account
                         {% endif %}
                     </a>
 
                     <ul class="dropdown-menu dropdown-menu-end shadow-sm rounded-3" aria-labelledby="navbarDropdown">
                         {% if user %}
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('index.index') }}">
-                                    <i class="bi bi-chat-dots me-1"></i> Messages
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('index.index') }}">
-                                    <i class="bi bi-bell me-1"></i> Notifications
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('index.index') }}">
-                                    <i class="bi bi-gear me-1"></i> Settings
-                                </a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
-                                    <i class="bi bi-box-arrow-right me-1"></i> Logout
-                                </a>
-                            </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('index.messages') }}">
+                                <i class="bi bi-chat-dots me-1"></i> Messages
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('index.notifications') }}">
+                                <i class="bi bi-bell me-1"></i> Notifications
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('index.settings') }}">
+                                <i class="bi bi-gear me-1"></i> Settings
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
+                                <i class="bi bi-box-arrow-right me-1"></i> Logout
+                            </a>
+                        </li>
                         {% else %}
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('auth.login_get') }}">
-                                    <i class="bi bi-box-arrow-in-right me-1"></i> Login
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url_for('auth.register') }}">
-                                    <i class="bi bi-person-plus me-1"></i> Register
-                                </a>
-                            </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('auth.login_get') }}">
+                                <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ url_for('auth.register') }}">
+                                <i class="bi bi-person-plus me-1"></i> Register
+                            </a>
+                        </li>
                         {% endif %}
                     </ul>
                 </li>

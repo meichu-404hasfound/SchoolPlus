@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications · School Platform{% endblock %}
+
+{% block content %}
+<section class="py-4">
+  <div class="container">
+    <div class="row">
+      <!-- Main Column -->
+      <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="fw-bold">Notifications</h2>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-outline-secondary rounded-pill" id="markAllRead">
+              <i class="bi bi-check2-all me-1"></i> Mark all as read
+            </button>
+            <button class="btn btn-sm btn-outline-danger rounded-pill" id="clearAll">
+              <i class="bi bi-trash3 me-1"></i> Clear all
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <ul class="nav nav-pills mb-3" id="notifTabs">
+          <li class="nav-item"><a class="nav-link active" data-bs-toggle="pill" href="#all">All</a></li>
+          <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#unread">Unread</a></li>
+          <li class="nav-item"><a class="nav-link" data-bs-toggle="pill" href="#important">Important</a></li>
+        </ul>
+
+        <!-- Notifications Content -->
+        <div class="tab-content">
+          <!-- All -->
+          <div class="tab-pane fade show active" id="all">
+            {% for n in notifications %}
+              {% include "partials/notification-card.html" %}
+            {% endfor %}
+          </div>
+
+          <!-- Unread -->
+          <div class="tab-pane fade" id="unread">
+            {% for n in notifications if not n.read %}
+              {% include "partials/notification-card.html" %}
+            {% else %}
+              <div class="alert alert-info rounded-3">🎉 No unread notifications</div>
+            {% endfor %}
+          </div>
+
+          <!-- Important -->
+          <div class="tab-pane fade" id="important">
+            {% for n in notifications if n.important %}
+              {% include "partials/notification-card.html" %}
+            {% else %}
+              <div class="alert alert-info rounded-3">No important notifications</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-lg-3">
+        <div class="card rounded-3 shadow-soft hover-raise mb-4">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3">Summary</h6>
+            <ul class="list-unstyled small">
+              <li><i class="bi bi-envelope-fill text-primary me-1"></i> Unread: {{ notifications|selectattr("read", "equalto", False)|list|length }}</li>
+              <li><i class="bi bi-star-fill text-warning me-1"></i> Important: {{ notifications|selectattr("important", "equalto", True)|list|length }}</li>
+              <li><i class="bi bi-bell-fill text-success me-1"></i> Total: {{ notifications|length }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card rounded-3 shadow-soft hover-raise">
+          <div class="card-body">
+            <h6 class="fw-bold mb-3">Settings</h6>
+            <form>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                <label class="form-check-label small" for="emailNotif">Email Notifications</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="smsNotif">
+                <label class="form-check-label small" for="smsNotif">SMS Notifications</label>
+              </div>
+              <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="pushNotif" checked>
+                <label class="form-check-label small" for="pushNotif">Push Notifications</label>
+              </div>
+              <button type="submit" class="btn btn-sm btn-primary rounded-pill mt-2">Save</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+{% endblock %}

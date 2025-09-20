@@ -11,6 +11,7 @@ auth_bp = Blueprint("auth", __name__)
 @auth_bp.get("/login")
 def login_get():
     if get_current_user():
+        flash("你已經登入了。")
         return redirect(url_for("index.index"))
     return render_template("login.html")
 

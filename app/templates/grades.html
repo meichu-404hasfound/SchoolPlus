@@ -1,0 +1,336 @@
+{% extends "base.html" %}
+
+{% block title %}Scores · School Platform{% endblock %}
+
+{% block content %}
+<section class="py-4">
+    <div class="container">
+        <h2 class="fw-bold mb-4"><i class="bi bi-bar-chart-fill text-primary me-2"></i> My Scores</h2>
+
+        <!-- Semester Selection -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form method="get" class="d-flex align-items-center gap-2">
+                    <label for="semester" class="form-label small mb-0">Select Semester:</label>
+                    <select id="semester" name="semester" class="form-select rounded-pill"
+                        onchange="this.form.submit()">
+                        {% for sem in semesters %}
+                        <option value="{{ sem }}" {% if sem==current_semester %}selected{% endif %}>
+                            {{ sem }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-sm btn-outline-secondary rounded-pill me-2">
+                    <i class="bi bi-download me-1"></i> Download Report (PDF)
+                </button>
+                <button class="btn btn-sm btn-outline-secondary rounded-pill">
+                    <i class="bi bi-file-earmark-spreadsheet me-1"></i> Export CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Top Row: Full Course Scores -->
+        <div class="row g-4">
+            <div class="col-lg-12">
+                <div class="card rounded-3 shadow-soft hover-raise">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-journal-bookmark-fill me-2 text-info"></i> Course
+                            Scores</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Credits</th>
+                                        <th>Grade</th>
+                                        <th>Score</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for course in scores %}
+                                    <tr>
+                                        <td>{{ course.name }}</td>
+                                        <td>{{ course.credits }}</td>
+                                        <td><span class="fw-bold">{{ course.grade }}</span></td>
+                                        <td>{{ course.score }}</td>
+                                        <td>
+                                            {% if course.passed %}
+                                            <span class="badge bg-success">Passed</span>
+                                            {% else %}
+                                            <span class="badge bg-danger">Failed</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Second Row: Insights + Summary -->
+        <div class="row g-4 mt-1">
+            <!-- Performance Insights -->
+            <div class="col-lg-6">
+                <div class="card rounded-3 shadow-soft hover-raise h-100">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">
+                            <i class="bi bi-lightbulb-fill me-2 text-warning"></i> Performance Insights
+                        </h5>
+
+                        <!-- Insights List -->
+                        <div class="bg-light p-3 rounded-3 mb-3">
+                            <ul class="list-unstyled small mb-0">
+                                <li class="mb-2">
+                                    <i class="bi bi-arrow-up-circle text-success me-1"></i>
+                                    <span class="fw-bold">Best course:</span>
+                                    {{ insights.best_course }} ({{ insights.best_score }})
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-arrow-down-circle text-danger me-1"></i>
+                                    <span class="fw-bold">Weakest course:</span>
+                                    {{ insights.worst_course }} ({{ insights.worst_score }})
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-bar-chart-line text-primary me-1"></i>
+                                    <span class="fw-bold">Average score:</span> {{ insights.average }}
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-slash-circle text-secondary me-1"></i>
+                                    <span class="fw-bold">Median score:</span> {{ insights.median }}
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-graph-up-arrow text-success me-1"></i>
+                                    <span class="fw-bold">Trending improvement:</span> {{ insights.trending }}
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-people-fill text-info me-1"></i>
+                                    <span class="fw-bold">Rank:</span> Top {{ insights.top_percentile }}
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-calendar-check text-primary me-1"></i>
+                                    <span class="fw-bold">Attendance rate:</span> {{ insights.attendance_rate }}
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-arrow-repeat text-warning me-1"></i>
+                                    <span class="fw-bold">Improvement since last semester:</span>
+                                    {{ insights.improvement_since_last }}
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-diagram-3-fill text-success me-1"></i>
+                                    <span class="fw-bold">Consistency:</span> {{ insights.consistency }}
+                                </li>
+                                <li>
+                                    <i class="bi bi-clipboard2-check text-danger me-1"></i>
+                                    <span class="fw-bold">Recommendation:</span> {{ insights.study_recommendation }}
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Score Distribution -->
+                        <div>
+                            <h6 class="fw-bold small text-muted mb-2">
+                                <i class="bi bi-bar-chart-fill me-1 text-primary"></i> Score Distribution
+                            </h6>
+                            <canvas id="insightsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semester Summary + Achievements -->
+            <div class="col-lg-6 d-flex flex-column gap-3">
+                <div class="card rounded-3 shadow-soft hover-raise flex-fill">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">
+                            <i class="bi bi-graph-up-arrow me-2 text-success"></i> Semester Summary
+                        </h5>
+                        <ul class="list-unstyled small mb-3">
+                            <li><strong>GPA:</strong> {{ summary.gpa }}</li>
+                            <li><strong>Total Credits:</strong> {{ summary.credits }}</li>
+                            <li><strong>Passed:</strong> {{ summary.passed }}</li>
+                            <li><strong>Failed:</strong> {{ summary.failed }}</li>
+                        </ul>
+                        <canvas id="scoreChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card rounded-3 shadow-soft hover-raise">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">
+                            <i class="bi bi-award-fill me-2 text-warning"></i> Achievements
+                        </h5>
+                        <ul class="list-unstyled small mb-0">
+                            {% for achievement in summary.achievements %}
+                            <li>
+                                <i class="bi bi-check-circle-fill text-success me-1"></i>
+                                {{ achievement }}
+                            </li>
+                            {% else %}
+                            <li class="text-muted"><em>No achievements recorded this semester.</em></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Multi-semester Graphs -->
+        <div class="row g-4 mt-4">
+            <div class="col-lg-6">
+                <div class="card rounded-3 shadow-soft hover-raise">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-graph-up me-2 text-primary"></i> GPA by Semester</h5>
+                        <canvas id="gpaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card rounded-3 shadow-soft hover-raise">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-bar-chart-line-fill me-2 text-info"></i> Scores
+                            Overview</h5>
+                        <canvas id="overviewChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Degree Progress -->
+        <div class="row g-4 mt-4">
+            <div class="col-12">
+                <div class="card rounded-3 shadow-soft hover-raise">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-mortarboard-fill me-2 text-secondary"></i> Degree
+                            Progress</h5>
+                        <p class="small text-muted mb-2">
+                            You have completed <strong>{{ progress.completed }}</strong> out of <strong>{{
+                                progress.required }}</strong> credits.
+                        </p>
+                        <div class="progress rounded-pill" style="height: 1.25rem;">
+                            <div class="progress-bar bg-primary fw-bold" role="progressbar"
+                                style="width: {{ (progress.completed / progress.required * 100)|round(0) }}%"
+                                aria-valuenow="{{ progress.completed }}" aria-valuemin="0"
+                                aria-valuemax="{{ progress.required }}">
+                                {{ (progress.completed / progress.required * 100)|round(0) }}%
+                            </div>
+                        </div>
+                        <ul class="list-inline small mt-3 mb-0">
+                            <li class="list-inline-item"><i class="bi bi-check-circle-fill text-success me-1"></i> Core:
+                                {{ progress.core }}/{{ progress.core_required }}</li>
+                            <li class="list-inline-item"><i class="bi bi-book-fill text-info me-1"></i> Electives: {{
+                                progress.electives }}/{{ progress.electives_required }}</li>
+                            <li class="list-inline-item"><i class="bi bi-award-fill text-warning me-1"></i> Honors: {{
+                                progress.honors }}/{{ progress.honors_required }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Doughnut for pass/fail
+        new Chart(document.getElementById("scoreChart"), {
+            type: "doughnut",
+            data: {
+                labels: ["Passed", "Failed"],
+                datasets: [{
+                    data: [{{ summary.passed }}, {{ summary.failed }}],
+            backgroundColor: ["#27AE60", "#E74C3C"]
+        }]
+    },
+        options: { responsive: true, plugins: { legend: { position: "bottom" } } }
+  });
+
+    // GPA trend
+    new Chart(document.getElementById("gpaChart"), {
+        type: "line",
+        data: {
+            labels: {{ semesters| tojson }},
+        datasets: [{
+            label: "GPA",
+            data: {{ stats.gpas | tojson }},
+        borderColor: "#3498DB",
+        backgroundColor: "rgba(52,152,219,0.2)",
+        fill: true,
+        tension: 0.3
+      }]
+    },
+        options: { responsive: true }
+  });
+
+    // Score overview (avg, high, low)
+    new Chart(document.getElementById("overviewChart"), {
+        type: "bar",
+        data: {
+            labels: {{ semesters| tojson }},
+        datasets: [
+        {
+            label: "Average",
+            data: {{ stats.averages | tojson }},
+        backgroundColor: "#F39C12"
+        },
+        {
+            label: "Highest",
+            data: {{ stats.highest | tojson }},
+        backgroundColor: "#27AE60"
+        },
+        {
+            label: "Lowest",
+            data: {{ stats.lowest | tojson }},
+        backgroundColor: "#E74C3C"
+        }
+    ]
+    },
+        options: { responsive: true, plugins: { legend: { position: "bottom" } } }
+  });
+});
+
+// Score Distribution (bar chart)
+new Chart(document.getElementById("insightsChart"), {
+  type: "bar",
+  data: {
+    labels: {{ insights.score_distribution|tojson }},
+    datasets: [{
+      label: "Score",
+      data: {{ insights.score_distribution|tojson }},
+      backgroundColor: "#3498DB",
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `Score: ${ctx.parsed.y}`
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        suggestedMax: 100,
+        ticks: { stepSize: 10 }
+      }
+    }
+  }
+});
+
+</script>
+{% endblock %}
