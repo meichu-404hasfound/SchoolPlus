@@ -1,14 +1,6 @@
 from openai import OpenAI
 
 # ===== Initialize Groq Client =====
-client = OpenAI(
-    api_key="gsk...",   # ⚠️ Replace with your Groq API Key
-    base_url="https://api.groq.com/openai/v1"
-)
-
-# Supported intents
-VALID_INTENTS = {"query_grades", "grade_analysis", "health_check", "past_exams", "site_navigation", "chat"}
-
 # ===== Detect Intent =====
 def detect_intent_ai(text: str) -> str:
     system_prompt = """You are an intent classifier.

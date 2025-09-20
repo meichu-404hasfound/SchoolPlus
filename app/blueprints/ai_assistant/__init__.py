@@ -1,1 +1,1 @@
-from .routes import ai_bp
+from .routes import ai_assistant_bp

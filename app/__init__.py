@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from .extensions import db, migrate
 from .blueprints import register_blueprints
 
@@ -11,4 +11,7 @@ def create_app(config_class="app.config.DevConfig"):
 
     register_blueprints(app)
 
+    @app.route("/ai_page")
+    def ai_page():
+        return render_template("ai_chat.html")
     return app
